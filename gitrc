@@ -1,0 +1,10 @@
+[user]
+  name = "Andrei Sura"
+  email = "indera@gmail.com"
+
+[https]
+  sslVerify = false
+
+
+[core]
+   editor = vim

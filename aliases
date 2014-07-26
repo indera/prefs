@@ -1,0 +1,220 @@
+# this file is sourced by .bashrc
+
+alias refresh=". ~/.bashrc"
+alias what="uname -a && echo OS: `getconf LONG_BIT`-bit && lscpu | grep op-mode"
+
+# avoid mistakes :)
+#alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+
+alias ls='ls --color=auto'
+alias lsc='ls -C --color=auto'
+
+alias l="ls -al"
+alias ll="ls -al"
+alias lsa="ls -al"
+alias lsr="ls -lR"
+alias lss='ls -ltr'
+alias big='du -hcs * | grep M'
+
+alias deadlock='mk-deadlock-logger  --ask-pass dev'
+alias dua="du -hcs"
+alias duf="du -h --max-depth=1 ./ | sort -n -r"
+
+alias cdd="cd ..        && pwd"
+alias c="cd ..          && pwd"
+alias c2="cd ../..      && pwd"
+alias c3="cd ../../..   && pwd"
+
+
+alias cdhg="cd    ~/hg/  && pwd && lsa"
+alias cdg="cd     ~/git/ && pwd && lsa"
+alias cdsvn="cd   ~/svn/ && pwd && lsa"
+alias cdtest="cd  ~/test && pwd && lsa"
+
+alias fu="/home/asura/bin/findfu.sh"
+
+alias log_req='less  /var/log/servlet/`date +%Y_%m_%d`.request.log'
+alias log_serv='tail -30 /var/log/servlet/log.xml | less'
+
+#misc
+alias me="ps auxww | colrm 16 63 | grep $USER | less"
+alias free="free -m"
+##ls --color=auto -hF --file-type
+
+# old habits die hard
+alias more="/usr/bin/less"
+set +o allexport
+
+alias log="clear && ls -al && hg log --style changelog"
+alias glog="pwd && hg glog "
+
+alias gst="hg paths && hg status"
+alias hgst="hg paths && hg status ./ "
+
+alias svni="clear && svn info"
+alias svnst="echo 'Executed svn status ...' && pwd && svn status"
+alias svndiff="svn diff | colordiff | less"
+alias svnd="svn diff | less"
+alias svnl="svn log --limit 100 | less"
+alias svnl_normal="svn log | less"
+
+#alias grepp="nice grep -irn --include='*.php' --color" 
+#alias greph="nice grep -irn --include='*.html' --color"
+
+alias grepp="nice ack-grep -ir --php" 
+alias grepx="nice ack-grep -ir --xml --html"
+alias boxes='ls -ld ~/httpd*'
+
+function gre() {
+   #echo "searching php / html files..." 
+   nice grep -irn --include='*.php' --include='*.html' --include='*.xhtml' --color "$1" *  | sed 's/:/ +/' | sed 's/^/vim /'
+}
+
+alias grep_xml="nice grep -irn --include='*xml' --color"
+alias grep_xsl="nice grep -irn --include='*xsl' --color"
+alias grep_xsd="nice grep -irn --include='*xsd' --color"
+
+alias grepj_old="nice grep -irn --include='*.java' --color"
+alias grepj="nice ack-grep -i --java"
+
+alias php_exc="tail -200 /home/httpd/logs/exceptions.log | less"
+alias cc_exc="tail -200 /var/log/cc-servlet/ccservlet.log | less"
+
+alias cpaexc="tail -200 /var/log/tomcat5.5/cpaolexceptions.log | less"
+
+
+alias apa_err='tail -200 /var/log/apache2/error.log | less'
+alias apa_log='tail -200 /var/log/apache2/access.log | less'
+
+function svnan()  {
+   echo "Ignoring changes in line endings... --ignore-eol-style"
+   svn ann -x --ignore-eol-style $@ | less -R; 
+}
+function svnan_normal()  { svn ann $@ | less -R; }
+function hgless() { hg log $@ | less -R; }
+function hgan()   { hg annotate -nudq $@ | less -R; }
+function hgdiff() { hg diff -bB $@ | colordiff | less -R; }  
+function hgdiff2() { hg diff -bB $@; }  
+
+# echo 'prefix: abc' | cut -d ":" -f 2 infile
+# echo 'prefix: abc' | sed -e 's/^.*://'
+
+function svn_file() {
+   file=$1
+   echo "File: $1"
+   svn diff "$file" | colordiff | less
+}
+
+function svnf() {
+   if [ "$#" -eq 0 ]
+      then
+         REV=$(svn info -r HEAD | grep -r 'Last Changed Rev:' | sed 's/Last Changed Rev: //')
+      else
+         REV="$1"
+   fi
+
+   PREV=$(expr $REV - 1)
+   #echo "first: $REV"
+   #echo "second: $PREV"
+   
+   echo "Executed:" 
+   echo "   svn diff -r $PREV:$REV ./ | grep 'Index:' | sed 's/^Index: //"
+
+   svn diff -r "$PREV:$REV" ./ | grep 'Index:' | sed 's/^Index: //' 
+}
+
+function svndif() {
+   if [ "$#" -eq 0 ]
+      then
+         CMD=$(svn info -r HEAD | grep -r 'Last Changed Rev:' | sed 's/Last Changed Rev: //')
+         #REV=$(svn info -r HEAD | grep -r 'Last Changed Rev:' | sed 's/Last Changed Rev: //')
+         REV=$(svn info | grep -r 'Last Changed Rev:' | sed 's/Last Changed Rev: //')
+         #REV=$(svnversion)
+      else
+         REV="$1"
+   fi
+
+   #echo "first: $REV"
+   PREV=$(expr $REV - 1)
+   #echo "second: $PREV"
+
+   echo "Latest repo version is: $CMD"
+   echo "Executed:" 
+   echo "   svn diff -r $PREV:$REV ./ | colordiff | less"
+   svn diff -r "$PREV:$REV" ./ | colordiff | less
+}
+
+function hglog() {
+   if [ "$#" -eq 0 ]
+      then 
+         REV="tip"
+      else 
+         REV="$1"
+   fi
+   #hg log -vpr "$REV" | colordiff | less -R;
+   hg log -vpr "$REV";
+   echo "Changes introduced in revision -> $REV";
+}
+
+function hgan2() {
+   if [ "$#" -eq 0 ]
+      then
+         echo "Usage hgan [rev] file"
+         return
+   fi
+   
+   if [ "$#" -eq 1 ]
+      then 
+         REV=''
+         WHAT="$1"
+      else
+         REV=" -r $1 "
+         WHAT=" $2 "
+   fi
+
+   # hg an -r 12777 -nu html/ufl/_lib/register.php | less
+   # echo 'Executing hg ann "$REV" -nu "$WHAT" "| less -R"
+   hg annotate "$REV" -nu "$WHAT" | less -R
+}
+
+function hglog2() {
+   TIP=$(hg head -q | cut -d: -f1)
+   
+   case $# in 
+      '0')
+         new=$TIP
+         old=$(expr $new - 1)
+         ;;
+      '1')
+         new="$1"
+         old=$(expr $new - 1)
+         ;;
+      '2')
+         # compare specified revisions
+         new=$2
+         old=$1
+         ;;
+      *)
+         echo "   Usage: 
+                     1. hglog tip
+                     2. hglog REV
+                     3. hglog OLD_REV NEW_REV
+               "
+         ;;
+   esac
+   
+   hg log -p --rev "$old:$new" | colordiff | less   
+   echo ">>> $(hg log --rev $new | grep summary)"
+}
+
+
+alias json='python -mjson.tool'
+
+alias old='find ./ -maxdepth 1 -mtime +365  | nl'
+alias old2='find ./ -maxdepth 1 -mtime +700  | nl'
+alias old3='find ./ -maxdepth 1 -mtime +1000  | nl'
+alias old4='find ./ -maxdepth 1 -mtime +2000  | nl'
+alias empty='find ./  -maxdepth 2 -type d -empty | nl'
+

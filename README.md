@@ -1,7 +1,7 @@
 prefs
 ==
 
-This repository is used to store uesful config files
+This repository is used to store useful config files
 
 
 Using SSH Keys

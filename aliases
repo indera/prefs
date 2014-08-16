@@ -8,8 +8,9 @@ alias what="uname -a && echo OS: `getconf LONG_BIT`-bit && lscpu | grep op-mode"
 alias cp='cp -i'
 alias mv='mv -i'
 
-alias ls='ls --color=auto'
-alias lsc='ls -C --color=auto'
+#alias ls='ls --color=auto'
+alias ls='ls -G'
+#alias lsc='ls -C --color=auto'
 
 alias l="ls -al"
 alias ll="ls -al"

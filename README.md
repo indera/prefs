@@ -1,10 +1,13 @@
 prefs
-=====
+==
 
-store uesful config files
+This repository is used to store uesful config files
 
-Using SSH keys
-== 
+
+Using SSH Keys
+====
+To avoid typing the username/password every time
+a commit is done to the github account
 
 * Generate private/public keys
 <pre>
@@ -15,7 +18,7 @@ Using SSH keys
 
 * Copy the key to the github account
 <pre>
-$ pbcopy < ~/.ssh/id_rsa.pub
+$ pbcopy &lt; ~/.ssh/id_rsa.pub
 </pre>
 
 * Configure ~/.ssh/config
@@ -28,6 +31,12 @@ Host github-as-indera
     IdentitiesOnly yes
 </pre>
 
-* Swith the remote urls from https(default) to ssh so the keys can be used
-  cd ~/git/prefs
-  git remote set-url origin git@github.com:indera/prefs.git
+* Switch the remote urls from https(default) to ssh so the keys can be used
+<pre>
+
+ $ cd ~/git/prefs
+ $ git remote set-url origin git@github.com:indera/prefs.git
+
+* Debugging the key
+
+  ssh -vT git@github.com

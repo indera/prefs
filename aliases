@@ -55,6 +55,7 @@ alias log="clear && ls -al && hg log --style changelog"
 
 alias gst='git status'
 alias glog='git log'
+alias glast='git show HEAD'
 alias gdiff='git diff'
 alias gdif='git diff --cached'
 alias gb='git branch'

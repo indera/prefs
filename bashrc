@@ -7,4 +7,5 @@ declare -x PS1
 export MYSQL_PS1="(\u@\h) [\d]> "
 export EDITOR=/usr/bin/vim
 export LANG=en_US.utf-8
+fortune
 

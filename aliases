@@ -8,7 +8,6 @@ alias what="uname -a && echo OS: `getconf LONG_BIT`-bit && lscpu | grep op-mode"
 alias cp='cp -i'
 alias mv='mv -i'
 
-#alias ls='ls --color=auto'
 alias ls='ls -G'
 #alias lsc='ls -C --color=auto'
 
@@ -49,10 +48,17 @@ alias more="/usr/bin/less"
 set +o allexport
 
 alias log="clear && ls -al && hg log --style changelog"
-alias glog="pwd && hg glog "
+#alias glog="pwd && hg glog "
 
-alias gst="hg paths && hg status"
-alias hgst="hg paths && hg status ./ "
+#alias gst="hg paths && hg status"
+#alias hgst="hg paths && hg status ./ "
+
+alias gst='git status'
+alias glog='git log'
+alias gdiff='git diff'
+alias gdif='git diff --cached'
+alias gb='git branch'
+alias gp='git remote -v'
 
 alias svni="clear && svn info"
 alias svnst="echo 'Executed svn status ...' && pwd && svn status"

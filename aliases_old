@@ -1,0 +1,132 @@
+
+alias svni="clear && svn info"
+alias svnst="echo 'Executed svn status ...' && pwd && svn status"
+alias svndiff="svn diff | colordiff | less"
+alias svnd="svn diff | less"
+alias svnl="svn log --limit 100 | less"
+alias svnl_normal="svn log | less"
+
+
+function svnan()  {
+   echo "Ignoring changes in line endings... --ignore-eol-style"
+   svn ann -x --ignore-eol-style $@ | less -R; 
+}
+function svnan_normal()  { svn ann $@ | less -R; }
+function hgless() { hg log $@ | less -R; }
+function hgan()   { hg annotate -nudq $@ | less -R; }
+function hgdiff() { hg diff -bB $@ | colordiff | less -R; }  
+function hgdiff2() { hg diff -bB $@; }  
+
+# echo 'prefix: abc' | cut -d ":" -f 2 infile
+# echo 'prefix: abc' | sed -e 's/^.*://'
+
+function svn_file() {
+   file=$1
+   echo "File: $1"
+   svn diff "$file" | colordiff | less
+}
+
+function svnf() {
+   if [ "$#" -eq 0 ]
+      then
+         REV=$(svn info -r HEAD | grep -r 'Last Changed Rev:' | sed 's/Last Changed Rev: //')
+      else
+         REV="$1"
+   fi
+
+   PREV=$(expr $REV - 1)
+   #echo "first: $REV"
+   #echo "second: $PREV"
+   
+   echo "Executed:" 
+   echo "   svn diff -r $PREV:$REV ./ | grep 'Index:' | sed 's/^Index: //"
+
+   svn diff -r "$PREV:$REV" ./ | grep 'Index:' | sed 's/^Index: //' 
+}
+
+function svndif() {
+   if [ "$#" -eq 0 ]
+      then
+         CMD=$(svn info -r HEAD | grep -r 'Last Changed Rev:' | sed 's/Last Changed Rev: //')
+         #REV=$(svn info -r HEAD | grep -r 'Last Changed Rev:' | sed 's/Last Changed Rev: //')
+         REV=$(svn info | grep -r 'Last Changed Rev:' | sed 's/Last Changed Rev: //')
+         #REV=$(svnversion)
+      else
+         REV="$1"
+   fi
+
+   #echo "first: $REV"
+   PREV=$(expr $REV - 1)
+   #echo "second: $PREV"
+
+   echo "Latest repo version is: $CMD"
+   echo "Executed:" 
+   echo "   svn diff -r $PREV:$REV ./ | colordiff | less"
+   svn diff -r "$PREV:$REV" ./ | colordiff | less
+}
+
+
+function hglog() {
+   if [ "$#" -eq 0 ]
+      then 
+         REV="tip"
+      else 
+         REV="$1"
+   fi
+   #hg log -vpr "$REV" | colordiff | less -R;
+   hg log -vpr "$REV";
+   echo "Changes introduced in revision -> $REV";
+}
+
+function hgan2() {
+   if [ "$#" -eq 0 ]
+      then
+         echo "Usage hgan [rev] file"
+         return
+   fi
+   
+   if [ "$#" -eq 1 ]
+      then 
+         REV=''
+         WHAT="$1"
+      else
+         REV=" -r $1 "
+         WHAT=" $2 "
+   fi
+
+   # hg an -r 12777 -nu html/ufl/_lib/register.php | less
+   # echo 'Executing hg ann "$REV" -nu "$WHAT" "| less -R"
+   hg annotate "$REV" -nu "$WHAT" | less -R
+}
+
+function hglog2() {
+   TIP=$(hg head -q | cut -d: -f1)
+   
+   case $# in 
+      '0')
+         new=$TIP
+         old=$(expr $new - 1)
+         ;;
+      '1')
+         new="$1"
+         old=$(expr $new - 1)
+         ;;
+      '2')
+         # compare specified revisions
+         new=$2
+         old=$1
+         ;;
+      *)
+         echo "   Usage: 
+                     1. hglog tip
+                     2. hglog REV
+                     3. hglog OLD_REV NEW_REV
+               "
+         ;;
+   esac
+   
+   hg log -p --rev "$old:$new" | colordiff | less   
+   echo ">>> $(hg log --rev $new | grep summary)"
+}
+
+

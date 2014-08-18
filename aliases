@@ -28,10 +28,14 @@ alias c2="cd ../..      && pwd"
 alias c3="cd ../../..   && pwd"
 
 
-alias cdhg="cd    ~/hg/  && pwd && lsa"
+alias cdhg="cd       ~/hg/  && pwd && lsa"
 alias cdg="cd     ~/git/ && pwd && lsa"
-alias cdsvn="cd   ~/svn/ && pwd && lsa"
-alias cdtest="cd  ~/test && pwd && lsa"
+alias cdv='cd     ~/git/redcap-vm && pwd && lsa'
+alias cdr='cd     ~/git/redi-hcvtarget && pwd && lsa'
+alias cdred='cd   ~/git/redi_me && pwd && lsa'
+alias cdgsm='cd   ~/git/gsm && pwd && lsa'
+alias cdsvn="cd      ~/svn/ && pwd && lsa"
+alias cdtest="cd     ~/test && pwd && lsa"
 
 alias fu="/home/asura/bin/findfu.sh"
 
@@ -50,20 +54,33 @@ set +o allexport
 alias log="clear && ls -al && hg log --style changelog"
 #alias glog="pwd && hg glog "
 
-#alias gst="hg paths && hg status"
 #alias hgst="hg paths && hg status ./ "
+#alias hgdiff='hg diff'
 
 alias gst='git status'
 alias glog='git log'
-alias glast='git show HEAD'
+#alias glast='git show HEAD'
+alias glast='git diff HEAD^..HEAD'
 alias gdiff='git diff'
 alias gdif='git diff --cached'
 alias gb='git branch'
 alias gp='git remote -v'
+alias gf='git show --name-status'
+alias grevert_prev='git reset --soft HEAD~1'
+alias gan='git blame'
+alias gin='git fetch && git log ..origin/master'
+alias gout='git fetch && git log origin/master..'
 
-alias grepp="nice ack-grep -ir --php" 
-alias grepx="nice ack-grep -ir --xml --html"
-alias boxes='ls -ld ~/httpd*'
+
+alias grepp="nice ack --php --python -i" 
+alias grepa="nice ack --php --html --xhtml -i"
+alias grepx="nice ack --xml --type=xsl -i"
+alias grepi="nice ack -i"
+alias greps='nice ack -i --shell'
+
+
+alias vas='vagrant ssh'
+alias boxes='lsa  ~/.vagrant.d/boxes'
 
 function gre() {
    #echo "searching php / html files..." 

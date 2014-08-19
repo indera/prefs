@@ -49,7 +49,7 @@ nnoremap <C-P>:call PhpDocSingle()<CR>
 vnoremap <C-P>:call PhpDocRange()<CR>
 
 
-source ~/.vim/php-doc.vim
+"source ~/.vim/php-doc.vim
 set dictionary+=/home/asura/.vim/PHP.dict
 set complete-=k complete+=k 
 

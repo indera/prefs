@@ -108,3 +108,4 @@ alias old3='find ./ -maxdepth 1 -mtime +1000  | nl'
 alias old4='find ./ -maxdepth 1 -mtime +2000  | nl'
 alias empty='find ./  -maxdepth 2 -type d -empty | nl'
 
+" test

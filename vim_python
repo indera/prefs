@@ -1,0 +1,27 @@
+
+sudo pip install jedi
+$ mkdir -p ~/.vim/bundle && cd   !$ && git clone --recursive https://github.com/davidhalter/jedi-vim.git
+$brew update 
+$brew upgrade vim
+$brew install vim
+
+$ vim --version
+
+VIM - Vi IMproved 7.4 (2013 Aug 10, compiled Dec 15 2014 10:26:28)
+MacOS X (unix) version
+
+$ vim --version | grep 'python\|conceal'
++conceal
++python
+
+== Add to ~/.vimrc
+
+execute pathogen#infect()
+call pathogen#helptags()
+
+== When running vim
+
+SHIFT+K ==> show docs
+CTRL+SPACE ==> autocomplete
+
+:helptags /usr/local/Cellar/vim/7.4.488/share/vim/vim74/doc
